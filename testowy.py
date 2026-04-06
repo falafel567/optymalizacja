@@ -3,15 +3,15 @@ import math
 import copy
 
 # --- PARAMETRY ---
-liczba_pokolen = 10000
-rozmiar_populacji = 120
-szansa_mutacji = 0.20
-elityzm = 2
+liczba_pokolen = 5000
+rozmiar_populacji = 30
+szansa_mutacji = 0.05
+elityzm = 1
 
 
 def wczytaj():
     try:
-        with open("test.txt", "r") as file:
+        with open("dane.txt", "r") as file:
             p = int(file.readline())
             n = int(file.readline())
             tablica = [int(file.readline()) for _ in range(n)]
@@ -62,8 +62,8 @@ def mutacja(osobnik):
     return nowy
 
 
-def selekcja_turniejowa(populacja_z_fitness, k=3):
-    turniej = random.sample(populacja_z_fitness, k)
+def selekcja_turniejowa(populacja_oceniona, k=3):
+    turniej = random.sample(populacja_oceniona, k)
     turniej.sort(key=lambda x: x[0])
     return copy.deepcopy(turniej[0][1])
 
@@ -101,4 +101,5 @@ if __name__ == '__main__':
 
     finalna_ocena = sorted([(zachlanny(o, p, tablica), o) for o in osobniki])
     print("--- KONIEC ---")
-    print(f"Najlepszy znaleziony czas: {finalna_ocena[0][0]}")
+    print(tablica)
+    print(f"Najlepszy znaleziony czas: {finalna_ocena[0][0], finalna_ocena[0][1]}")

@@ -2,12 +2,12 @@ import random
 import math
 import copy
 
-liczba_pokolen = 5000
-rozmiar_populacji = 50
-szansa_mutacji = 0.2
+liczba_pokolen = 100
+rozmiar_populacji = 20
+szansa_mutacji = 0.05
 
 def wczytaj():
-    with open("test.txt", "r") as file:
+    with open("dane.txt", "r") as file:
         p = int(file.readline())
         n = int(file.readline())
         tablica = []
