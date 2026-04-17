@@ -4,18 +4,21 @@ import copy
 
 # --- PARAMETRY ---
 liczba_pokolen = 5000
-rozmiar_populacji = 30
-szansa_mutacji = 0.05
+rozmiar_populacji = 50
+szansa_mutacji = 0.02
 elityzm = 1
 
 
 def wczytaj():
     try:
-        with open("dane.txt", "r") as file:
+        with open("cmax/INSTANCES/NU_1_0050_25_8.txt", "r") as file:
             p = int(file.readline())
             n = int(file.readline())
-            tablica = [int(file.readline()) for _ in range(n)]
-        return p, tablica
+            tablica = list(map(int, file.readline().split()))
+            # for _ in range(n):
+            #     liczba = int(file.readline())
+            #     tablica.append(liczba)
+            return p, tablica
     except FileNotFoundError:
         print("Błąd: Nie znaleziono pliku test.txt")
         return 2, [10, 20, 30, 40, 50]
@@ -102,4 +105,4 @@ if __name__ == '__main__':
     finalna_ocena = sorted([(zachlanny(o, p, tablica), o) for o in osobniki])
     print("--- KONIEC ---")
     print(tablica)
-    print(f"Najlepszy znaleziony czas: {finalna_ocena[0][0], finalna_ocena[0][1]}")
+    print(f"Najlepszy znaleziony czas: {finalna_ocena[0][0]}")
