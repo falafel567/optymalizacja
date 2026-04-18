@@ -1,13 +1,16 @@
-import random
+from random import randint
 
-p = input("Podaj p: ")
-n = input("Podaj n: ")
-zakres_dol = input("Podaj zakres od: ")
-zakres_gora = input("Podaj zakres do: ")
+nazwaPliku = str(input('Nazwa: '))
 
-liczby = [str(random.randint(int(zakres_dol), int(zakres_gora))) for _ in range(int(n))]
+p = input('\nPodaj p: ')
+n = input('Podaj n: ')
+
+zakresDol = int(input('\nZakres od: '))
+zakresGora = int(input('Zakres do: '))
+
+liczby = [str(randint(zakresDol, zakresGora)) for _ in range(int(n))]
 
 with open("dane.txt", "w") as f:
     f.write(str(p) + "\n")
     f.write(str(n) + "\n")
-    f.write(" ".join(liczby))
+    f.write("\n".join(liczby))
