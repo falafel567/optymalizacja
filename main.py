@@ -1,6 +1,7 @@
 import random
 import math
 import copy
+import time
 
 # --- PARAMETRY ---
 liczba_pokolen = 5000
@@ -8,16 +9,16 @@ rozmiar_populacji = 50
 szansa_mutacji = 0.02
 elityzm = 1
 
+# --- PARAMETR CZASOWY ---
+LIMIT_CZASU_SEKUNDY = 3 * 60
+
 
 def wczytaj():
     try:
-        with open("cmax/INSTANCES/NU_1_0050_25_8.txt", "r") as file:
+        with open("cmax/INSTANCES/NU_1_1000_10_0.txt", "r") as file:
             p = int(file.readline())
             n = int(file.readline())
             tablica = list(map(int, file.readline().split()))
-            # for _ in range(n):
-            #     liczba = int(file.readline())
-            #     tablica.append(liczba)
             return p, tablica
     except FileNotFoundError:
         print("Błąd: Nie znaleziono pliku test.txt")
@@ -77,12 +78,27 @@ if __name__ == '__main__':
 
     osobniki = [populacja_pierwsza(n) for _ in range(rozmiar_populacji)]
 
+    najlepszy_wynik_ever = float('inf')
+    czas_start = time.time()
+
+
     for gen_idx in range(liczba_pokolen):
+
+        aktualny_czas = time.time()
+        if aktualny_czas - czas_start >= LIMIT_CZASU_SEKUNDY:
+            print(f"\n[!] Przerwano algorytm po osiągnięciu limitu czasu w pokoleniu {gen_idx}.")
+            print(f"[!] Aktualny najlepszy wynik w momencie przerwania: {najlepszy_wynik_ever}")
+            break
+
         oceniona_populacja = []
         for o in osobniki:
             oceniona_populacja.append((zachlanny(o, p, tablica), o))
 
         oceniona_populacja.sort(key=lambda x: x[0])
+
+        najlepszy_w_pokoleniu = oceniona_populacja[0][0]
+        if najlepszy_w_pokoleniu < najlepszy_wynik_ever:
+            najlepszy_wynik_ever = najlepszy_w_pokoleniu
 
         nowa_populacja = []
 
@@ -96,13 +112,13 @@ if __name__ == '__main__':
             dziecko = krzyzowanie(rodzic1, rodzic2)
 
             if random.random() < szansa_mutacji:
-                dziecko1 = mutacja(dziecko)
+                dziecko = mutacja(dziecko)
 
             nowa_populacja.append(dziecko)
 
         osobniki = nowa_populacja
 
     finalna_ocena = sorted([(zachlanny(o, p, tablica), o) for o in osobniki])
-    print("--- KONIEC ---")
-    print(tablica)
-    print(f"Najlepszy znaleziony czas: {finalna_ocena[0][0]}")
+    print("\n--- KONIEC ---")
+    print(f"Rzeczywisty czas działania: {round(time.time() - czas_start, 2)} s")
+    print(f"Najlepszy znaleziony czas maszynowy (Cmax): {finalna_ocena[0][0]}")

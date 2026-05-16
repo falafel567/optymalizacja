@@ -4,13 +4,13 @@ import copy
 
 def wczytaj():
     try:
-        with open("cmax/INSTANCES/NU_1_0050_25_8.txt", "r") as file:
+        with open("dane.txt", "r") as file:
             p = int(file.readline())
             n = int(file.readline())
-            tablica = list(map(int, file.readline().split()))
-            # for _ in range(n):
-            #     liczba = int(file.readline())
-            #     tablica.append(liczba)
+            tablica = []
+            for _ in range(n):
+                liczba = int(file.readline())
+                tablica.append(liczba)
             return p, tablica
     except FileNotFoundError:
         print("Błąd: Nie znaleziono pliku test.txt")
